@@ -133,7 +133,7 @@ textarea {
 
 .section {
 	padding: 2.5em 0; 
-	
+
   &__details-info h1 {
 	margin-bottom: 0.5em;
 	text-transform: capitalize;
@@ -155,6 +155,11 @@ textarea {
   
   &__details-img p {
 	margin-left: 0.75em;
+  }
+  &__details-content {
+	border: 1px solid black;
+	padding: 10px;
+	margin-bottom: 10px;
   }
   
   @media screen and (min-width: 768px) {
