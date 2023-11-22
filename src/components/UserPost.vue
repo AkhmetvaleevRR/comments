@@ -8,7 +8,7 @@
             src="https://res.cloudinary.com/terieyenike/image/upload/v1644896156/vvasmj6onychxlkkynua.png"
             alt="anime character"
           />
-          <p>Written by {{ getUserById(props.fetchedPost.userId) }}</p>
+          <p>Written by {{ props.fetchedPost.username }}</p>
         </div>
       </div>
       <div class="section__details-content">
@@ -35,19 +35,10 @@ import Comment from '@/components/UserComment.vue'
 import { ref } from 'vue'
 
 const props = defineProps({
-  fetchedPost: {},
-  users: {}
+  fetchedPost: {}
 })
 let loaded = ref(false)
 let commentResponse = ref({})
-
-function getUserById(id) { //СФункция поиска имени юзера по id
-  for (let i = 0; i < props.users.length; i++) {
-    if (props.users[i].id === id) {
-      return props.users[i].username
-    }
-  }
-}
 
 function getComments(postId) {  //Функция получения комментов к конкретному посту
   const commentUrl = `https://jsonplaceholder.typicode.com/posts/${postId}/comments`

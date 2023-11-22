@@ -10,7 +10,7 @@ export const useResponseStore = defineStore('responseStore', () => {
   const usersUrl = 'https://jsonplaceholder.typicode.com/users'
   const postsUrl = 'https://jsonplaceholder.typicode.com/posts'
 
-  function getPosts(id = '') {
+  function getPosts(id = '', sortByUsers = 'desc') {
     //Собираем посты
     loaded.value = false
     fetch(postsUrl + id, {
@@ -23,7 +23,7 @@ export const useResponseStore = defineStore('responseStore', () => {
       .then((res) =>
         res.json().then((x) => {
           response.value = x
-          cutResponse.value = response.value.slice(0, 10)
+          getUsers(sortByUsers)
         })
       ) //преобразуем ответ в json и сохраняем в переменную
       .catch((error) => error.message.includes('Failed to fetch')) //отлавливаем ошибки и выводим в консоль
@@ -32,7 +32,7 @@ export const useResponseStore = defineStore('responseStore', () => {
       })
   }
 
-  function getUsers() {
+  function getUsers(sortByUsers) {
     //Собираем юзеров
     fetch(usersUrl, {
       headers: {
@@ -41,9 +41,28 @@ export const useResponseStore = defineStore('responseStore', () => {
       },
       method: 'GET'
     })
-      .then((res) => res.json().then((x) => (usersResponse.value = x))) //преобразуем ответ в json и сохраняем в переменную
+      .then((res) =>
+        res.json().then((x) => {
+          usersResponse.value = x
+          if (sortByUsers) {
+            for (let i = 0; i < response.value.length; i++) {
+              response.value[i].username = usersResponse.value.find(
+                (x) => x.id === response.value[i].userId
+              ).username
+            }
+            if (sortByUsers === 'desc') {
+              response.value.sort((a, b) => a.username.localeCompare(b.username))
+            } else if (sortByUsers === 'asc') {
+              response.value.sort((a, b) => -1 * a.username.localeCompare(b.username))
+            }
+          }
+        })
+      ) //преобразуем ответ в json и сохраняем в переменную
       .catch((error) => error.message.includes('Failed to fetch')) //отлавливаем ошибки и выводим в консоль
       .finally(() => {
+        if (sortByUsers) {
+          cutResponse.value = response.value.slice(0, 10)
+        }
         loaded.value = true
       })
   }
@@ -55,6 +74,5 @@ export const useResponseStore = defineStore('responseStore', () => {
   }
 
   getPosts()
-  getUsers()
   return { response, loaded, usersResponse, cutResponse, getPosts, loadMorePosts }
 })

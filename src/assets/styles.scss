@@ -132,38 +132,37 @@ textarea {
 
 
 .section {
-	padding: 2.5em 0;
-  }
-  
-  .section__details-info h1 {
+	padding: 2.5em 0; 
+	
+  &__details-info h1 {
 	margin-bottom: 0.5em;
 	text-transform: capitalize;
 	font-family: Padauk, sans-serif;
 	font-weight: 700;
   }
   
-  .section__details-img {
+  &__details-img {
 	display: flex;
 	align-items: center;
 	margin-bottom: 2em;
   }
   
-  .section__details-img img {
+  &__details-img img {
 	width: 2.5rem;
 	border-radius: 100%;
 	border: 1px solid black;
   }
   
-  .section__details-img p {
+  &__details-img p {
 	margin-left: 0.75em;
   }
   
   @media screen and (min-width: 768px) {
-	.section__details-content {
+	&__details-content {
 	  width: 85%;
 	}
   }
-  
+}
   .list-enter-active,
   .list-leave-active {
 	transition: all 0.5s ease;
